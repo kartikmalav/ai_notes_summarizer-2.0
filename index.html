@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI StudyLab — Smart Educational AI Workspace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .landing-hero {
+      padding: 112px 0 64px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16) 0%, transparent 60%);
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background-color: var(--primary-subtle);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: var(--primary-light);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .hero-headline {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 780px;
+      margin: 0 auto 16px;
+    }
+    .hero-headline span {
+      background: linear-gradient(135deg, #A78BFA, #8B5CF6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.04rem;
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .hero-cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .preview-frame {
+      max-width: 980px;
+      margin: 0 auto;
+      background-color: #111722;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 40px rgba(139, 92, 246, 0.14);
+      text-align: left;
+    }
+    .preview-dots {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+    .preview-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #293244;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      transition: var(--transition);
+    }
+    .feature-card:hover {
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: var(--shadow-purple);
+      transform: translateY(-3px);
+    }
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background-color: var(--primary-subtle);
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      border: 1px solid rgba(139, 92, 246, 0.28);
+    }
+    .landing-footer {
+      border-top: 1px solid var(--border-color);
+      padding: 28px 0;
+      margin-top: 64px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    @media (max-width: 900px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-left">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <span class="brand-text">AI <span>StudyLab</span></span>
+        </a>
+        <nav class="nav-links">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="documents.html" class="nav-link">Document Library</a>
+          <a href="mcq-practice.html" class="nav-link">MCQ Practice</a>
+        </nav>
+      </div>
+      <div class="navbar-right">
+        <a href="login.html" class="btn btn-secondary btn-sm">Sign In</a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-rocket"></i> Open StudyLab
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="landing-hero">
+    <div class="container">
+      <div class="hero-pill">
+        <i class="fa-solid fa-sparkles"></i> AI-Powered Educational Workspace
+      </div>
+      <h1 class="hero-headline">
+        Turn Lecture PDFs &amp; Slides into <span>Exam Mastery</span>
+      </h1>
+      <p class="hero-sub">
+        Upload your PDF, DOCX, or PPTX course files. AI StudyLab instantly generates structured short notes, high-yield exam questions, interactive MCQs, and a 24/7 document chat tutor.
+      </p>
+      <div class="hero-cta-row">
+        <a href="dashboard.html" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-table-cells-large"></i> Launch Dashboard
+        </a>
+        <a href="upload.html" class="btn btn-secondary btn-lg">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Upload Document
+        </a>
+      </div>
+
+      <!-- Mini Dashboard Preview -->
+      <div class="preview-frame">
+        <div class="preview-dots"><span></span><span></span><span></span></div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px;">
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">Total Documents</div>
+            <div style="font-size: 1.5rem; font-weight: 700; margin-top: 4px;">6 <span class="badge badge-success" style="font-size: 0.7rem;">Analyzed</span></div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">Notes Generated</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-light); margin-top: 4px;">120</div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">Questions Created</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #FBBF24; margin-top: 4px;">152</div>
+          </div>
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">MCQs Generated</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: var(--success); margin-top: 4px;">252</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="badge badge-pdf">PDF</span>
+            <strong style="font-size: 0.9rem;">Distributed_Systems_Ch4_Consensus.pdf</strong>
+            <span class="badge badge-success">Ready • Analyzed</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <a href="results.html?doc=doc-1&tab=notes" class="btn btn-purple-soft btn-xs">Notes</a>
+            <a href="mcq-practice.html?doc=doc-1" class="btn btn-purple-soft btn-xs">MCQs</a>
+            <a href="chat.html?doc=doc-1" class="btn btn-primary btn-xs">Ask AI</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="container" style="padding-top: 24px;">
+    <div style="text-align: center; margin-bottom: 12px;">
+      <h2 style="font-size: 1.7rem; font-weight: 700;">Everything You Need to Ace Your Exams</h2>
+      <p class="page-subtitle">Built specifically for university students managing heavy course loads.</p>
+    </div>
+
+    <div class="features-grid">
+      <a href="results.html?tab=summary" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-align-left"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Executive Summaries</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Condense 50-page chapters into crystal-clear summaries and bulleted key takeaways in seconds.</p>
+      </a>
+
+      <a href="results.html?tab=notes" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-note-sticky"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Short Revision Notes</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Structured, topic-by-topic study notes formatted for fast reading before midterms and finals.</p>
+      </a>
+
+      <a href="results.html?tab=questions" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-circle-question"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Important Questions</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">High-probability exam questions paired with mark weightings and complete model answers.</p>
+      </a>
+
+      <a href="mcq-practice.html" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-list-check"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">MCQ Practice Studio</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Timed interactive quizzes with instant answer checking and AI explanations for every option.</p>
+      </a>
+
+      <a href="exam-prep.html" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Exam Prep Mode</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Active-recall flashcards, syllabus readiness tracking, and a built-in 25-minute focus sprint timer.</p>
+      </a>
+
+      <a href="chat.html" class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
+        <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Ask Your Document</h3>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Chat directly with any uploaded PDF, DOCX, or PPTX to clarify complex concepts immediately.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-graduation-cap" style="color: var(--primary-light);"></i>
+        <strong>AI StudyLab</strong> — Dark SaaS Educational Platform
+      </div>
+      <div style="display: flex; gap: 18px; flex-wrap: wrap;">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="documents.html">My Documents</a>
+        <a href="upload.html">Upload PDF</a>
+        <a href="login.html">Sign In</a>
+        <a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+

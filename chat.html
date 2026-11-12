@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Your Document | AI StudyLab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/study-tools.css" />
+</head>
+<body>
+  <header id="app-navbar"></header>
+
+  <main class="page-wrapper" style="padding-bottom: 20px;">
+    <div class="container">
+      <div class="chat-layout">
+        <!-- Sidebar: Document Context Picker -->
+        <aside class="chat-sidebar">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 6px;">
+            <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">
+              Document Context
+            </span>
+            <a href="upload.html" style="font-size: 0.78rem; color: var(--primary-light);">+ Upload</a>
+          </div>
+          <div id="chat-doc-list" style="display: flex; flex-direction: column; gap: 6px;"></div>
+        </aside>
+
+        <!-- Chat Main Area -->
+        <section class="chat-main">
+          <div class="chat-topbar">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <div class="brand-icon" style="width: 30px; height: 30px; font-size: 0.85rem;">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+              <div style="min-width: 0;">
+                <h1 id="chat-active-filename" style="font-size: 0.96rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  Distributed_Systems_Ch4_Consensus.pdf
+                </h1>
+                <span id="chat-active-subject" style="font-size: 0.76rem; color: var(--text-secondary);">Computer Science • Ready for Q&amp;A</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a href="#" id="chat-open-results-btn" class="btn btn-secondary btn-xs">
+                <i class="fa-regular fa-eye"></i> View Notes
+              </a>
+              <button type="button" id="clear-chat-btn" class="btn btn-ghost btn-xs" title="Clear Chat">
+                <i class="fa-solid fa-broom"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Messages Feed -->
+          <div class="chat-messages" id="chat-messages"></div>
+
+          <!-- Quick Prompt Chips -->
+          <div style="padding: 8px 18px; border-top: 1px solid rgba(41, 50, 68, 0.5); display: flex; gap: 8px; flex-wrap: wrap; background: #131824;">
+            <button type="button" class="btn btn-purple-soft btn-xs chat-quick-chip" data-q="Give me a quick 3-bullet summary">
+              <i class="fa-solid fa-bolt"></i> Quick Summary
+            </button>
+            <button type="button" class="btn btn-purple-soft btn-xs chat-quick-chip" data-q="What are the top exam questions from this file?">
+              <i class="fa-solid fa-circle-question"></i> Exam Questions
+            </button>
+            <button type="button" class="btn btn-purple-soft btn-xs chat-quick-chip" data-q="Explain the most important concept simply">
+              <i class="fa-solid fa-lightbulb"></i> Explain Simply
+            </button>
+          </div>
+
+          <!-- Input Bar -->
+          <form class="chat-input-bar" id="chat-form">
+            <input
+              type="text"
+              id="chat-input"
+              class="input-control"
+              style="flex: 1;"
+              placeholder="Ask a question about this document..."
+              required
+            />
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-paper-plane"></i> Send
+            </button>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
+

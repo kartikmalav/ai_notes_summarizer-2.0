@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam Preparation | AI StudyLab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/study-tools.css" />
+</head>
+<body>
+  <header id="app-navbar"></header>
+
+  <main class="page-wrapper">
+    <div class="container">
+      <!-- Page Header + Document Selector -->
+      <section class="tool-header">
+        <div>
+          <h1 class="page-title">AI Exam Preparation Dashboard</h1>
+          <p class="page-subtitle">Document-grounded exam questions, definitions, key topics, and concise revision notes.</p>
+        </div>
+        <div class="tool-doc-selector-wrap">
+          <select id="exam-doc-select" class="select-control" aria-label="Select Document"></select>
+          <button type="button" id="exam-generate-btn" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Exam Prep
+          </button>
+          <a href="#" id="exam-mcq-btn" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-list-check"></i> Practice MCQs
+          </a>
+        </div>
+      </section>
+
+      <!-- Document Overview & Real-Content Counts -->
+      <section class="exam-doc-banner" id="exam-doc-banner">
+        <div class="exam-doc-banner-top">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <span class="badge badge-pdf" id="exam-doc-format">PDF</span>
+            <div style="min-width: 0;">
+              <h2 id="exam-doc-name" style="font-size: 1.05rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Loading document...
+              </h2>
+              <p id="exam-doc-meta" style="font-size: 0.8rem; color: var(--text-secondary);">Select an uploaded PDF to inspect exam materials</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button type="button" id="exam-gen-defs-btn" class="btn btn-purple-soft btn-xs" style="display: none;">
+              <i class="fa-solid fa-book-open"></i> Refresh Definitions
+            </button>
+            <a href="#" id="exam-results-link" class="btn btn-ghost btn-xs">
+              <i class="fa-solid fa-file-lines"></i> Full Study Results
+            </a>
+          </div>
+        </div>
+
+        <div class="exam-stats-row">
+          <div class="exam-stat-card">
+            <div>
+              <div class="exam-stat-label">Important Topics</div>
+              <div class="exam-stat-value" id="stat-topics-count">0</div>
+            </div>
+            <div class="exam-stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+          </div>
+          <div class="exam-stat-card">
+            <div>
+              <div class="exam-stat-label">Important Questions</div>
+              <div class="exam-stat-value" id="stat-questions-count">0</div>
+            </div>
+            <div class="exam-stat-icon"><i class="fa-solid fa-circle-question"></i></div>
+          </div>
+          <div class="exam-stat-card">
+            <div>
+              <div class="exam-stat-label">Important Definitions</div>
+              <div class="exam-stat-value" id="stat-defs-count">0</div>
+            </div>
+            <div class="exam-stat-icon"><i class="fa-solid fa-spell-check"></i></div>
+          </div>
+          <div class="exam-stat-card">
+            <div>
+              <div class="exam-stat-label">Short Notes</div>
+              <div class="exam-stat-value" id="stat-notes-count">0</div>
+            </div>
+            <div class="exam-stat-icon"><i class="fa-solid fa-note-sticky"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inline Error Banner -->
+      <div id="exam-error-banner" class="exam-error-banner" style="display: none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-circle-exclamation" style="color: var(--danger);"></i>
+          <span id="exam-error-text" style="font-size: 0.88rem;"></span>
+        </div>
+        <button type="button" id="exam-error-dismiss" class="btn btn-ghost btn-xs">Dismiss</button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="exam-loading-state" class="exam-state-card" style="display: none;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--primary-light); margin-bottom: 10px;"></i>
+        <p id="exam-loading-text" style="color: var(--text-main); font-weight: 500;">Loading exam preparation data...</p>
+      </div>
+
+      <!-- Main Study Workspace -->
+      <div id="exam-workspace">
+        <!-- Navigation Tabs (Questions Default Active) -->
+        <div class="tabs-bar" role="tablist" aria-label="Exam preparation sections">
+          <button type="button" class="tab-btn active" data-tab="questions" role="tab" aria-selected="true">
+            <i class="fa-solid fa-circle-question"></i> Questions <span class="badge badge-purple" id="tab-count-questions">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="topics" role="tab" aria-selected="false">
+            <i class="fa-solid fa-bullseye"></i> Topics <span class="badge badge-subject" id="tab-count-topics">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="definitions" role="tab" aria-selected="false">
+            <i class="fa-solid fa-book"></i> Definitions <span class="badge badge-subject" id="tab-count-defs">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="notes" role="tab" aria-selected="false">
+            <i class="fa-solid fa-note-sticky"></i> Short Notes <span class="badge badge-subject" id="tab-count-notes">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-tab="flashcards" role="tab" aria-selected="false">
+            <i class="fa-solid fa-layer-group"></i> Flashcards <span class="badge badge-subject" id="tab-count-flashcards">0</span>
+          </button>
+        </div>
+
+        <!-- Search & Filter Toolbar -->
+        <div class="exam-filter-bar" id="exam-filter-bar">
+          <div class="exam-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="search"
+              id="exam-search-input"
+              class="input-control"
+              placeholder="Search questions, topics, definitions, or keywords..."
+              aria-label="Search exam preparation content"
+            />
+          </div>
+
+          <div class="exam-filter-controls">
+            <select id="exam-topic-filter" class="select-control" aria-label="Filter by topic">
+              <option value="ALL">All Topics</option>
+            </select>
+
+            <div class="mark-pill-group" id="exam-marks-filter" role="group" aria-label="Filter questions by marks">
+              <button type="button" class="mark-pill active" data-marks="ALL">All</button>
+              <button type="button" class="mark-pill" data-marks="2">2 Marks</button>
+              <button type="button" class="mark-pill" data-marks="5">5 Marks</button>
+              <button type="button" class="mark-pill" data-marks="10">10 Marks</button>
+            </div>
+
+            <button type="button" id="exam-toggle-answers-btn" class="btn btn-secondary btn-sm">
+              <i class="fa-regular fa-eye"></i> Show All Answers
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 1: Important Questions with Answers (Default Active) -->
+        <section class="tab-panel active" id="panel-questions" role="tabpanel"></section>
+
+        <!-- Tab 2: Important Topics -->
+        <section class="tab-panel" id="panel-topics" role="tabpanel"></section>
+
+        <!-- Tab 3: Important Definitions -->
+        <section class="tab-panel" id="panel-definitions" role="tabpanel"></section>
+
+        <!-- Tab 4: Short Notes -->
+        <section class="tab-panel" id="panel-notes" role="tabpanel"></section>
+
+        <!-- Tab 5: Compact Revision Flashcards -->
+        <section class="tab-panel" id="panel-flashcards" role="tabpanel">
+          <div class="flashcard-compact-shell">
+            <div class="card" style="border-color: rgba(139, 92, 246, 0.35);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <h2 class="section-heading" style="font-size: 1rem;">
+                    <i class="fa-solid fa-layer-group" style="color: var(--primary-light);"></i>
+                    Revision Flashcards
+                  </h2>
+                  <span class="badge badge-purple" id="flashcard-counter">0 Cards</span>
+                </div>
+                <div class="mark-pill-group" id="flashcard-type-filter">
+                  <button type="button" class="mark-pill active" data-card-type="all">All</button>
+                  <button type="button" class="mark-pill" data-card-type="question">Questions</button>
+                  <button type="button" class="mark-pill" data-card-type="definition">Definitions</button>
+                </div>
+              </div>
+
+              <div id="flashcard-box" class="flashcard-compact-box" title="Click to flip card">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center;">
+                  <span class="badge badge-subject" id="flashcard-side-label">QUESTION / TERM</span>
+                  <span class="badge badge-purple" id="flashcard-topic-label" style="display: none;"></span>
+                </div>
+                <p id="flashcard-text" style="font-size: 0.98rem; font-weight: 500; color: var(--text-main); line-height: 1.6; max-width: 580px;"></p>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 8px;">
+                <button type="button" id="prev-card-btn" class="btn btn-secondary btn-sm">
+                  <i class="fa-solid fa-arrow-left"></i> Previous
+                </button>
+                <button type="button" id="flip-card-btn" class="btn btn-purple-soft btn-sm">
+                  <i class="fa-solid fa-rotate"></i> Flip
+                </button>
+                <button type="button" id="next-card-btn" class="btn btn-secondary btn-sm">
+                  Next <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/exam-prep.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | AI StudyLab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <!-- Shared Horizontal Navbar -->
+  <header id="app-navbar"></header>
+
+  <main class="page-wrapper">
+    <div class="container">
+      <!-- Welcome Header -->
+      <section class="dashboard-hero">
+        <div>
+          <h1 class="welcome-title">
+            Welcome back, <span id="dash-username" style="color: var(--primary-light);">Alex</span>
+            <span class="welcome-badge"><i class="fa-solid fa-sparkles"></i> AI Pro Student</span>
+          </h1>
+          <p class="page-subtitle">Your smart study workspace — track analyzed documents, notes, and exam prep progress.</p>
+        </div>
+        <div class="hero-actions">
+          <a href="mcq-practice.html" class="btn btn-secondary">
+            <i class="fa-solid fa-bolt" style="color: var(--primary-light);"></i>
+            Quick Quiz
+          </a>
+          <a href="upload.html" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            Upload New Document
+          </a>
+        </div>
+      </section>
+
+      <!-- Four Statistics Cards -->
+      <section class="stats-grid" aria-label="Study Statistics">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-label">Total Documents</span>
+            <div class="stat-icon">
+              <i class="fa-solid fa-file-lines"></i>
+            </div>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-value" id="stat-total-docs">6</span>
+            <span class="stat-trend"><i class="fa-solid fa-arrow-trend-up"></i> +2 this week</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-label">Notes Generated</span>
+            <div class="stat-icon info">
+              <i class="fa-solid fa-note-sticky"></i>
+            </div>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-value" id="stat-notes-count">120</span>
+            <span class="stat-trend"><i class="fa-solid fa-check"></i> AI Summarized</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-label">Questions Created</span>
+            <div class="stat-icon warning">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-value" id="stat-questions-count">152</span>
+            <span class="stat-trend"><i class="fa-solid fa-bullseye"></i> Exam Ready</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span class="stat-label">MCQs Generated</span>
+            <div class="stat-icon success">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+          </div>
+          <div class="stat-value-row">
+            <span class="stat-value" id="stat-mcqs-count">252</span>
+            <span class="stat-trend"><i class="fa-solid fa-trophy"></i> 92% Avg</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Study Assistant & Quick Actions -->
+      <section class="dashboard-middle-grid">
+        <!-- AI Study Assistant -->
+        <div class="assistant-card">
+          <div class="assistant-header">
+            <div class="assistant-title-wrap">
+              <div class="assistant-avatar">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </div>
+              <div>
+                <h2 class="section-heading" style="font-size: 1.05rem;">AI Study Assistant</h2>
+                <p class="assistant-desc">Ask questions, generate high-yield flashcards, or clarify tough concepts instantly.</p>
+              </div>
+            </div>
+            <span class="badge badge-success"><i class="fa-solid fa-circle" style="font-size: 0.45rem;"></i> Online</span>
+          </div>
+
+          <form id="dash-assistant-form" class="assistant-input-group">
+            <select id="assistant-doc-select" class="assistant-doc-select" aria-label="Select Document Context">
+              <!-- Populated dynamically -->
+            </select>
+            <input
+              type="text"
+              id="assistant-prompt-input"
+              class="assistant-input"
+              placeholder="Ask anything about your selected study document..."
+              required
+            />
+            <button type="submit" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-paper-plane"></i> Ask AI
+            </button>
+          </form>
+
+          <div class="assistant-pills">
+            <button type="button" class="suggestion-pill" data-prompt="Summarize the top 5 exam-critical concepts from this document">
+              <i class="fa-solid fa-bolt"></i> Key Exam Takeaways
+            </button>
+            <button type="button" class="suggestion-pill" data-prompt="Create 5 rapid-fire revision questions with short answers">
+              <i class="fa-solid fa-circle-question"></i> Rapid Revision Q&A
+            </button>
+            <button type="button" class="suggestion-pill" data-prompt="Explain the hardest topic in simple terms with an analogy">
+              <i class="fa-solid fa-lightbulb"></i> Simplify Hard Concepts
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions-card">
+          <div class="section-bar" style="margin-bottom: 0;">
+            <h2 class="section-heading">
+              <i class="fa-solid fa-rocket" style="color: var(--primary-light);"></i>
+              Quick Actions
+            </h2>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">1-click tools</span>
+          </div>
+
+          <div class="quick-actions-grid">
+            <a href="upload.html" class="quick-action-item">
+              <div class="qa-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              <div>
+                <div class="qa-title">Upload PDF</div>
+                <div class="qa-sub">Analyze new notes</div>
+              </div>
+            </a>
+
+            <a href="exam-prep.html" class="quick-action-item">
+              <div class="qa-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <div>
+                <div class="qa-title">Exam Prep</div>
+                <div class="qa-sub">High-yield revision</div>
+              </div>
+            </a>
+
+            <a href="mcq-practice.html" class="quick-action-item">
+              <div class="qa-icon"><i class="fa-solid fa-list-check"></i></div>
+              <div>
+                <div class="qa-title">MCQ Practice</div>
+                <div class="qa-sub">Timed mock quizzes</div>
+              </div>
+            </a>
+
+            <a href="chat.html" class="quick-action-item">
+              <div class="qa-icon"><i class="fa-solid fa-comments"></i></div>
+              <div>
+                <div class="qa-title">Ask Document</div>
+                <div class="qa-sub">AI Q&A assistant</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Documents Section -->
+      <section>
+        <div class="section-bar">
+          <h2 class="section-heading">
+            <i class="fa-solid fa-clock-rotate-left" style="color: var(--primary-light);"></i>
+            Recent Documents
+          </h2>
+          <a href="documents.html" class="btn btn-secondary btn-sm">
+            <span>View All Library</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="recent-docs-grid" id="recent-docs-grid">
+          <!-- Populated dynamically by js/dashboard.js -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
+

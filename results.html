@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Study Results | AI StudyLab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/study-tools.css" />
+</head>
+<body>
+  <header id="app-navbar"></header>
+
+  <main class="page-wrapper">
+    <div class="container">
+      <!-- Top Document Context Header -->
+      <section class="tool-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span class="badge badge-pdf" id="res-format-badge">PDF</span>
+            <span class="badge badge-subject" id="res-subject-badge">Computer Science</span>
+            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> AI Analyzed</span>
+          </div>
+          <h1 class="page-title" id="res-doc-title" style="margin-top: 8px;">Distributed_Systems_Ch4_Consensus.pdf</h1>
+          <p class="page-subtitle" id="res-doc-meta">4.2 MB • 34 Pages • Uploaded 2026-10-24</p>
+        </div>
+
+        <div class="tool-doc-selector-wrap">
+          <select id="results-doc-select" class="select-control" aria-label="Switch Document"></select>
+          <a href="#" id="res-mcq-link" class="btn btn-purple-soft btn-sm">
+            <i class="fa-solid fa-list-check"></i> Practice MCQs
+          </a>
+          <a href="#" id="res-chat-link" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-comments"></i> Ask AI
+          </a>
+        </div>
+      </section>
+
+      <!-- Tabs Bar -->
+      <nav class="tabs-bar" aria-label="Document Study Views">
+        <button type="button" class="tab-btn active" data-tab="summary">
+          <i class="fa-solid fa-align-left"></i> Executive Summary
+        </button>
+        <button type="button" class="tab-btn" data-tab="notes">
+          <i class="fa-solid fa-note-sticky"></i> Short Notes
+        </button>
+        <button type="button" class="tab-btn" data-tab="questions">
+          <i class="fa-solid fa-circle-question"></i> Important Questions
+        </button>
+      </nav>
+
+      <div class="results-grid">
+        <!-- Main Tab Content -->
+        <div>
+          <!-- Summary Panel -->
+          <section class="tab-panel active" id="panel-summary">
+            <div class="card" style="margin-bottom: 16px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <h2 class="section-heading">
+                  <i class="fa-solid fa-sparkles" style="color: var(--primary-light);"></i>
+                  AI Executive Summary
+                </h2>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-purple-soft btn-xs" id="gen-summary-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Summary
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-xs" id="copy-summary-btn">
+                    <i class="fa-regular fa-copy"></i> Copy Summary
+                  </button>
+                </div>
+              </div>
+              <p id="res-summary-text" style="color: var(--text-secondary); line-height: 1.7; font-size: 0.94rem;"></p>
+            </div>
+
+            <div class="card">
+              <h2 class="section-heading" style="margin-bottom: 14px;">
+                <i class="fa-solid fa-key" style="color: var(--primary-light);"></i>
+                Key Exam Takeaways
+              </h2>
+              <ul id="res-takeaways-list" style="display: flex; flex-direction: column; gap: 10px;"></ul>
+            </div>
+          </section>
+
+          <!-- Short Notes Panel -->
+          <section class="tab-panel" id="panel-notes">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <h2 class="section-heading">
+                <i class="fa-solid fa-book-open" style="color: var(--primary-light);"></i>
+                Structured Revision Notes
+              </h2>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-purple-soft btn-xs" id="gen-notes-btn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Notes &amp; Q&amp;A
+                </button>
+                <button type="button" class="btn btn-secondary btn-xs" id="copy-notes-btn">
+                  <i class="fa-regular fa-copy"></i> Copy All Notes
+                </button>
+              </div>
+            </div>
+            <div id="res-notes-container"></div>
+          </section>
+
+          <!-- Important Questions Panel -->
+          <section class="tab-panel" id="panel-questions">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <h2 class="section-heading">
+                <i class="fa-solid fa-graduation-cap" style="color: var(--primary-light);"></i>
+                High-Probability Exam Questions
+              </h2>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-purple-soft btn-xs" id="gen-questions-btn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Questions
+                </button>
+                <button type="button" class="btn btn-secondary btn-xs" id="toggle-all-answers-btn">
+                  <i class="fa-regular fa-eye"></i> Reveal All Answers
+                </button>
+              </div>
+            </div>
+            <div id="res-questions-container"></div>
+          </section>
+        </div>
+
+        <!-- Right Quick Study Sidebar -->
+        <aside style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card">
+            <h3 class="section-heading" style="margin-bottom: 14px;">Document Insights</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;">
+                <div style="font-size: 0.76rem; color: var(--text-muted);">Short Notes</div>
+                <div id="insight-notes-count" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-light); margin-top: 2px;">18</div>
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;">
+                <div style="font-size: 0.76rem; color: var(--text-muted);">Questions</div>
+                <div id="insight-q-count" style="font-size: 1.3rem; font-weight: 700; color: #FBBF24; margin-top: 2px;">25</div>
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;">
+                <div style="font-size: 0.76rem; color: var(--text-muted);">MCQs Ready</div>
+                <div id="insight-mcq-count" style="font-size: 1.3rem; font-weight: 700; color: var(--success); margin-top: 2px;">40</div>
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px;">
+                <div style="font-size: 0.76rem; color: var(--text-muted);">Est. Read Time</div>
+                <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">8 min</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="section-heading" style="margin-bottom: 12px;">Next Study Steps</h3>
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <a href="#" id="side-exam-link" class="btn btn-secondary" style="justify-content: flex-start;">
+                <i class="fa-solid fa-bullseye" style="color: var(--primary-light);"></i> Open Exam Prep Mode
+              </a>
+              <a href="#" id="side-mcq-link" class="btn btn-secondary" style="justify-content: flex-start;">
+                <i class="fa-solid fa-list-check" style="color: var(--success);"></i> Take MCQ Practice Quiz
+              </a>
+              <a href="#" id="side-chat-link" class="btn btn-secondary" style="justify-content: flex-start;">
+                <i class="fa-solid fa-comments" style="color: #60A5FA;"></i> Ask Questions in AI Chat
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/results.js"></script>
+</body>
+</html>
+

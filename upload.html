@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Document | AI StudyLab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/study-tools.css" />
+</head>
+<body>
+  <header id="app-navbar"></header>
+
+  <main class="page-wrapper">
+    <div class="container">
+      <section class="tool-header">
+        <div>
+          <h1 class="page-title">Upload Study Document</h1>
+          <p class="page-subtitle">Upload PDF lecture notes to extract text and automatically generate summaries, short notes, and quizzes.</p>
+        </div>
+        <a href="documents.html" class="btn btn-secondary btn-sm">
+          <i class="fa-solid fa-folder-open"></i> View Document Library
+        </a>
+      </section>
+
+      <div class="upload-layout">
+        <!-- Upload Dropzone & Configuration -->
+        <div class="card">
+          <div class="dropzone" id="upload-dropzone">
+            <div class="dropzone-icon">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 600;">Drag &amp; drop your PDF file here</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                Supports <strong>PDF (.pdf)</strong> up to 20 MB
+              </p>
+            </div>
+            <input type="file" id="file-input" accept=".pdf,application/pdf" hidden />
+            <button type="button" class="btn btn-purple-soft btn-sm" id="browse-file-btn">
+              <i class="fa-solid fa-folder-plus"></i> Browse Files
+            </button>
+          </div>
+
+          <div id="selected-file-banner" style="display: none; margin-top: 14px; padding: 12px 14px; border-radius: var(--radius-md); background-color: var(--primary-subtle); border: 1px solid rgba(139, 92, 246, 0.35); align-items: center; justify-content: space-between; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+              <i class="fa-solid fa-file-pdf" id="selected-file-icon" style="color: var(--primary-light); font-size: 1.15rem;"></i>
+              <div style="min-width: 0;">
+                <div id="selected-file-name" style="font-weight: 600; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div>
+                <div id="selected-file-size" style="font-size: 0.75rem; color: var(--text-secondary);"></div>
+              </div>
+            </div>
+            <button type="button" id="clear-file-btn" class="btn btn-ghost btn-xs"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <form id="upload-form" style="margin-top: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+              <div>
+                <label class="form-label" for="doc-title-input">Document Name</label>
+                <input type="text" id="doc-title-input" class="input-control" style="width: 100%;" placeholder="e.g., Operating_Systems_Threads.pdf" required />
+              </div>
+              <div>
+                <label class="form-label" for="doc-subject-select">Course Subject</label>
+                <select id="doc-subject-select" class="select-control" style="width: 100%;">
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Artificial Intelligence">Artificial Intelligence</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Economics">Economics</option>
+                  <option value="Physics">Physics</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="form-label">AI Generation Options</label>
+            <div class="upload-options-grid">
+              <label class="checkbox-card">
+                <input type="checkbox" id="opt-summary" checked />
+                <span style="font-size: 0.86rem;">Executive Summary</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="opt-notes" checked />
+                <span style="font-size: 0.86rem;">Structured Short Notes</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="opt-questions" checked />
+                <span style="font-size: 0.86rem;">Important Exam Questions</span>
+              </label>
+              <label class="checkbox-card">
+                <input type="checkbox" id="opt-mcqs" checked />
+                <span style="font-size: 0.86rem;">Interactive MCQ Quiz</span>
+              </label>
+            </div>
+
+            <div id="upload-progress-box" style="display: none; margin-top: 18px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 6px;">
+                <span id="progress-status-text" style="color: var(--primary-light);">Extracting document text...</span>
+                <span id="progress-pct-text">0%</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="upload-progress-fill"></div>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+              <button type="submit" class="btn btn-primary" id="start-analyze-btn" style="flex: 1;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Upload &amp; Analyze PDF
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Sidebar: How AI StudyLab Works -->
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card">
+            <h3 class="section-heading" style="margin-bottom: 12px;">
+              <i class="fa-solid fa-microchip" style="color: var(--primary-light);"></i>
+              What Happens Next?
+            </h3>
+            <ul style="display: flex; flex-direction: column; gap: 14px;">
+              <li style="display: flex; gap: 12px;">
+                <span class="badge badge-purple" style="height: 26px; width: 26px; justify-content: center; flex-shrink: 0;">1</span>
+                <div>
+                  <strong style="font-size: 0.88rem;">Smart Parsing &amp; Chunking</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Extracts headings, formulas, diagrams, and definitions accurately.</p>
+                </div>
+              </li>
+              <li style="display: flex; gap: 12px;">
+                <span class="badge badge-purple" style="height: 26px; width: 26px; justify-content: center; flex-shrink: 0;">2</span>
+                <div>
+                  <strong style="font-size: 0.88rem;">High-Yield Notes &amp; Q&amp;A</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Creates crisp revision notes and exam-weighted subjective questions.</p>
+                </div>
+              </li>
+              <li style="display: flex; gap: 12px;">
+                <span class="badge badge-purple" style="height: 26px; width: 26px; justify-content: center; flex-shrink: 0;">3</span>
+                <div>
+                  <strong style="font-size: 0.88rem;">Practice MCQs &amp; AI Chat</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary);">Generates custom quizzes and indexes your document for Ask AI chat.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: linear-gradient(145deg, #171D29, #1A162E); border-color: rgba(139, 92, 246, 0.3);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <i class="fa-solid fa-shield-halved" style="color: var(--success);"></i>
+              <strong style="font-size: 0.9rem;">Private &amp; Instant</strong>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+              Your uploaded documents are stored locally in your StudyLab workspace for instant review across all study tools.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>
+

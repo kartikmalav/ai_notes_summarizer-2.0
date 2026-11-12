@@ -1,0 +1,270 @@
+/* ==========================================================================
+   AI StudyLab - My Document Library Styles
+   ========================================================================== */
+
+.library-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.library-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Filter Toolbar */
+.library-toolbar {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 260px;
+  flex-wrap: wrap;
+}
+
+.search-field-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+}
+
+.search-field-wrap i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.search-field-wrap input {
+  width: 100%;
+  padding-left: 35px;
+}
+
+.filter-select {
+  min-width: 160px;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* Document Table Container */
+.table-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 980px;
+}
+
+.docs-table thead {
+  background-color: #121723;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.docs-table th {
+  padding: 12px 16px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.docs-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(41, 50, 68, 0.65);
+  vertical-align: middle;
+  font-size: 0.86rem;
+}
+
+.docs-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.docs-table tbody tr:hover {
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.docs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Filename Cell */
+.doc-name-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 270px;
+}
+
+.doc-name-link {
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.doc-name-link:hover {
+  color: var(--primary-light);
+}
+
+.doc-date-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Size & Items Cell */
+.size-items-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.size-main {
+  font-weight: 500;
+  color: var(--text-main);
+  font-size: 0.84rem;
+}
+
+.items-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Study Actions Cell */
+.study-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.action-btn-purple {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(139, 92, 246, 0.13);
+  color: var(--primary-light);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.action-btn-purple:hover {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.35);
+}
+
+.action-btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.action-btn-view:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.action-btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.action-btn-delete:hover {
+  background-color: var(--danger);
+  color: #FFFFFF;
+}
+
+/* Empty State */
+.empty-table-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.empty-table-state i {
+  font-size: 2.3rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .toolbar-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-field-wrap {
+    max-width: 100%;
+  }
+}
+
