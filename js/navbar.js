@@ -12,7 +12,7 @@ function renderNavbar() {
   const currentPage = window.location.pathname.split("/").pop() || "dashboard.html";
   const cachedUser = StudyLabAPI.getCachedUser() || {
     name: "Student",
-    email: "student@university.edu"
+    email: "student@example.com"
   };
   const initials = StudyLabAPI.getInitials(cachedUser.name);
   const firstName = (cachedUser.name || "Student").split(" ")[0];

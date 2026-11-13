@@ -22,6 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const forgotBtn = document.getElementById("forgot-password-btn");
+  if (forgotBtn) {
+    forgotBtn.addEventListener("click", () => {
+      StudyLabUI.showToast(
+        "Password reset is disabled in this educational workspace demo. You can create a new account via Sign Up.",
+        "info"
+      );
+    });
+  }
+
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();

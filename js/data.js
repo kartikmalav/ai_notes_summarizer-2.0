@@ -375,7 +375,7 @@ const StudyLabStore = {
         this.USER_KEY,
         JSON.stringify({
           name: "Alex Morgan",
-          email: "alex.morgan@university.edu",
+          email: "alex.morgan@example.com",
           role: "Computer Science & Engineering",
           avatar: "AM"
         })
@@ -457,9 +457,9 @@ const StudyLabStore = {
     this.init();
     try {
       const user = localStorage.getItem(this.USER_KEY);
-      return user ? JSON.parse(user) : { name: "Alex Morgan", email: "alex.morgan@university.edu", avatar: "AM" };
+      return user ? JSON.parse(user) : { name: "Alex Morgan", email: "alex.morgan@example.com", avatar: "AM" };
     } catch (e) {
-      return { name: "Alex Morgan", email: "alex.morgan@university.edu", avatar: "AM" };
+      return { name: "Alex Morgan", email: "alex.morgan@example.com", avatar: "AM" };
     }
   },
 

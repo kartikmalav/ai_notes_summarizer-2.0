@@ -3,15 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in to AI StudyLab, an independent educational workspace for document-based study, summaries, and exam prep." />
   <title>Sign In | AI StudyLab</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/study-tools.css" />
 </head>
 <body class="auth-page">
   <div class="auth-card">
     <div style="text-align: center; margin-bottom: 24px;">
-      <a href="login.html" style="display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem;">
+      <a href="index.html" title="Return to AI StudyLab Home" style="display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem;">
         <span style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #8B5CF6, #6D28D9); display: inline-flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 4px 14px rgba(139, 92, 246, 0.45);">
           <i class="fa-solid fa-graduation-cap"></i>
         </span>
@@ -21,18 +28,38 @@
       <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">Sign in to continue studying with your AI workspace</p>
     </div>
 
-    <form id="login-form">
+    <form id="login-form" action="/api/auth/login" method="POST">
       <div class="form-group">
-        <label class="form-label" for="login-email">University Email</label>
-        <input type="email" id="login-email" class="input-control" style="width: 100%;" placeholder="alex.morgan@university.edu" required />
+        <label class="form-label" for="login-email">Email Address</label>
+        <input
+          type="email"
+          id="login-email"
+          class="input-control"
+          style="width: 100%;"
+          placeholder="alex.morgan@example.com"
+          autocomplete="username"
+          required
+        />
       </div>
 
       <div class="form-group">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <label class="form-label" for="login-password" style="margin-bottom: 0;">Password</label>
-          <a href="#" onclick="StudyLabUI.showToast('Contact your administrator or create a new account to reset access.', 'info'); return false;" style="font-size: 0.78rem; color: var(--primary-light);">Forgot password?</a>
+          <button
+            type="button"
+            id="forgot-password-btn"
+            style="background: none; border: none; padding: 0; font-size: 0.78rem; color: var(--primary-light); cursor: pointer;"
+          >Forgot password?</button>
         </div>
-        <input type="password" id="login-password" class="input-control" style="width: 100%;" placeholder="Enter your password" required />
+        <input
+          type="password"
+          id="login-password"
+          class="input-control"
+          style="width: 100%;"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
       </div>
 
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px; padding: 10px;">
@@ -42,6 +69,17 @@
 
     <div style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-secondary);">
       Don't have an account? <a href="signup.html" style="color: var(--primary-light); font-weight: 600;">Create free account</a>
+    </div>
+
+    <div style="margin-top: 20px; padding: 10px 12px; border-radius: var(--radius-md); background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.2); font-size: 0.76rem; color: var(--text-secondary); text-align: center; line-height: 1.45;">
+      <i class="fa-solid fa-shield-halved" style="color: var(--primary-light); margin-right: 4px;"></i>
+      <strong>Independent Educational Project:</strong> AI StudyLab is not affiliated with, sponsored by, or impersonating any university or third-party service. Passwords are encrypted with bcrypt.
+    </div>
+
+    <div style="text-align: center; margin-top: 14px;">
+      <a href="index.html" style="font-size: 0.82rem; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Homepage
+      </a>
     </div>
   </div>
 

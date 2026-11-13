@@ -22,11 +22,45 @@ const examPrepRoutes = require("./routes/examPrepRoutes");
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
-// Security headers (allowing CDN fonts/icons used by the existing frontend)
+// Security headers with strict Content-Security-Policy (blocks phishing iframes, unauthorized scripts & form hijacking)
 app.use(
   helmet({
-    contentSecurityPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" }
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.googleapis.com"
+        ],
+        fontSrc: [
+          "'self'",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
+        imgSrc: ["'self'", "data:", "blob:"],
+        connectSrc: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        upgradeInsecureRequests: []
+      }
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "same-origin" },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    },
+    noSniff: true,
+    xssFilter: true,
+    frameguard: { action: "deny" }
   })
 );
 
@@ -119,14 +153,13 @@ app.use((req, res, next) => {
   return next();
 });
 
-// Redirect root URL away from public landing page to Login
+// Serve the public product landing page at root (prevents deceptive forced-redirect phishing flags)
+const frontendRoot = path.join(__dirname, "..");
 app.get(["/", "/index.html"], (_req, res) => {
-  res.set("Cache-Control", "no-store");
-  return res.redirect(302, "/login.html");
+  return res.sendFile(path.join(frontendRoot, "index.html"));
 });
 
 // Serve existing frontend files directly for seamless local running
-const frontendRoot = path.join(__dirname, "..");
 app.use("/css", express.static(path.join(frontendRoot, "css")));
 app.use("/js", express.static(path.join(frontendRoot, "js")));
 app.use(

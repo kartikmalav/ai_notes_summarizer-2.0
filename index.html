@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI StudyLab is an educational AI workspace for students to turn lecture PDFs and slides into notes, summaries, MCQs, and exam questions." />
   <title>AI StudyLab — Smart Educational AI Workspace</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/navbar.css" />
   <style>
@@ -224,7 +231,7 @@
       <a href="results.html?tab=notes" class="feature-card">
         <div class="feature-icon"><i class="fa-solid fa-note-sticky"></i></div>
         <h3 style="font-size: 1.02rem; font-weight: 600; margin-bottom: 6px;">Short Revision Notes</h3>
-        <p style="font-size: 0.86rem; color: var(--text-secondary);">Structured, topic-by-topic study notes formatted for fast reading before midterms and finals.</p>
+        <p style="font-size: 0.86rem; color: var(--text-secondary);">Struct                                                                                                                                             ured, topic-by-topic study notes formatted for fast reading before midterms and finals.</p>
       </a>
 
       <a href="results.html?tab=questions" class="feature-card">
@@ -268,7 +275,32 @@
         <a href="signup.html">Sign Up</a>
       </div>
     </div>
+    <div class="container" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <i class="fa-solid fa-shield-halved" style="color: var(--primary-light); margin-right: 4px;"></i>
+        <strong>Educational Workspace:</strong> AI StudyLab is an independent student study tool. It is not affiliated with, sponsored by, or impersonating any university, college, or third-party institution.
+      </div>
+      <div>
+        <span>Data Security: Local Database &bull; bcrypt Password Hashing &bull; JWT Authentication</span>
+      </div>
+    </div>
   </footer>
+
+  <script>
+    // Update navbar buttons if user has an active session
+    (function() {
+      try {
+        const token = localStorage.getItem("ai_studylab_jwt_token");
+        if (token) {
+          const signInBtn = document.querySelector('.navbar-right a[href="login.html"]');
+          if (signInBtn) {
+            signInBtn.textContent = "My Account";
+            signInBtn.href = "dashboard.html";
+          }
+        }
+      } catch (_) {}
+    })();
+  </script>
 </body>
 </html>
 
