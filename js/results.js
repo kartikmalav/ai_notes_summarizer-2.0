@@ -29,10 +29,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         <a href="upload.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Your First PDF</a>
       `;
       if (docSelect) docSelect.innerHTML = `<option value="">No documents</option>`;
+      document.getElementById("res-mcq-link")?.setAttribute("href", "mcq-practice.html");
+      document.getElementById("res-chat-link")?.setAttribute("href", "chat.html");
+      document.getElementById("side-exam-link")?.setAttribute("href", "exam-prep.html");
+      document.getElementById("side-mcq-link")?.setAttribute("href", "mcq-practice.html");
+      document.getElementById("side-chat-link")?.setAttribute("href", "chat.html");
       return;
     }
 
-    activeDocumentId = StudyLabUI.getQueryParam("doc") || String(docs[0].id);
+    const requestedDoc = StudyLabUI.getQueryParam("doc");
+    const exists = docs.some(d => String(d.id) === String(requestedDoc));
+    activeDocumentId = exists ? String(requestedDoc) : String(docs[0].id);
 
     if (docSelect) {
       docSelect.innerHTML = docs.map(d => `<option value="${d.id}">${d.filename}</option>`).join("");
@@ -132,6 +139,10 @@ async function loadAndRenderDocument(docId) {
   if (!docId) return;
 
   try {
+    const url = new URL(window.location.href);
+    url.searchParams.set("doc", docId);
+    window.history.replaceState({}, "", url.toString());
+
     const res = await StudyLabAPI.getDocument(docId);
     const doc = res.document;
 

@@ -4,11 +4,12 @@ const { generateMcqs } = require("../services/aiService");
 const { parsePositiveInt, safeJsonParse } = require("../utils/validators");
 
 /**
- * POST /api/mcqs/generate/:documentId
+ * POST /api/mcqs/generate/:documentId? (or /api/mcqs/generate)
  */
 async function createMcqs(req, res, next) {
   try {
-    const docId = parsePositiveInt(req.params.documentId);
+    const rawDocId = req.params.documentId || req.body?.documentId || req.query?.doc;
+    const docId = parsePositiveInt(rawDocId);
     if (!docId) {
       return next(new AppError("Invalid document ID.", 400));
     }
@@ -94,13 +95,14 @@ async function createMcqs(req, res, next) {
 }
 
 /**
- * GET /api/mcqs/:documentId
- * Supports documentId = "all" for mixed practice across user's documents.
+ * GET /api/mcqs/:documentId? (or /api/mcqs?doc=)
+ * Supports documentId = "all" (or empty) for mixed practice across user's documents.
  * Deliberately omits correct_index/explanation until submission so quiz scoring stays server-authoritative.
  */
 async function getMcqsByDocument(req, res, next) {
   try {
-    const param = req.params.documentId;
+    const rawParam = req.params.documentId || req.query.documentId || req.query.doc || "all";
+    const param = String(rawParam).toLowerCase();
 
     if (param === "all") {
       const rows = await db.query(

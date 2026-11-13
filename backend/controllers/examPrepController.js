@@ -209,13 +209,26 @@ async function buildExamPrepPayload(docId, userId) {
 }
 
 /**
- * GET /api/exam-prep/:documentId
+ * GET /api/exam-prep/:documentId? (or /api/exam-prep?doc=)
  */
 async function getExamPrep(req, res, next) {
   try {
-    const docId = parsePositiveInt(req.params.documentId);
+    const rawDocId = req.params.documentId || req.query.documentId || req.query.doc;
+    let docId = parsePositiveInt(rawDocId);
+
     if (!docId) {
-      return next(new AppError("Invalid document ID.", 400));
+      const latestDocs = await db.query(
+        "SELECT id FROM documents WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+        [req.user.id]
+      );
+      if (latestDocs.length === 0) {
+        return res.json({
+          success: true,
+          examPrep: null,
+          message: "No documents found for this user."
+        });
+      }
+      docId = latestDocs[0].id;
     }
 
     const examPrep = await buildExamPrepPayload(docId, req.user.id);
@@ -229,14 +242,23 @@ async function getExamPrep(req, res, next) {
 }
 
 /**
- * POST /api/exam-prep/:documentId/generate
- * Body optional: { mode: "missing" | "all" | "definitions" }
+ * POST /api/exam-prep/:documentId/generate (or POST /api/exam-prep/generate)
+ * Body optional: { mode: "missing" | "all" | "definitions", documentId?: number }
  */
 async function generateExamPrep(req, res, next) {
   try {
-    const docId = parsePositiveInt(req.params.documentId);
+    const rawDocId = req.params.documentId || req.body?.documentId || req.query?.doc;
+    let docId = parsePositiveInt(rawDocId);
+
     if (!docId) {
-      return next(new AppError("Invalid document ID.", 400));
+      const latestDocs = await db.query(
+        "SELECT id FROM documents WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",
+        [req.user.id]
+      );
+      if (latestDocs.length === 0) {
+        return next(new AppError("No documents available to generate exam preparation.", 404));
+      }
+      docId = latestDocs[0].id;
     }
 
     await ensureExamPrepTable();

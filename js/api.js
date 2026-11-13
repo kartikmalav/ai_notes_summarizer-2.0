@@ -115,7 +115,11 @@ const StudyLabAPI = {
 
     const data = await response.json().catch(() => ({}));
 
-    if (response.status === 401 && !endpoint.startsWith("/auth/login") && !endpoint.startsWith("/auth/signup")) {
+    const isAuthExpired =
+      (response.status === 401 && !endpoint.startsWith("/auth/login") && !endpoint.startsWith("/auth/signup")) ||
+      (response.status === 404 && endpoint === "/auth/me");
+
+    if (isAuthExpired) {
       this.clearSession();
       const currentPage = (window.location.pathname.split("/").pop() || "").toLowerCase();
       if (currentPage !== "login.html" && currentPage !== "signup.html") {
@@ -212,26 +216,30 @@ const StudyLabAPI = {
 
   // Exam Preparation Pack
   getExamPrep(documentId) {
-    return this.request(`/exam-prep/${encodeURIComponent(documentId)}`);
+    const path = documentId ? `/exam-prep/${encodeURIComponent(documentId)}` : "/exam-prep";
+    return this.request(path);
   },
 
   generateExamPrep(documentId, mode = "missing") {
-    return this.request(`/exam-prep/${encodeURIComponent(documentId)}/generate`, {
+    const path = documentId ? `/exam-prep/${encodeURIComponent(documentId)}/generate` : "/exam-prep/generate";
+    return this.request(path, {
       method: "POST",
-      body: JSON.stringify({ mode })
+      body: JSON.stringify({ mode, documentId })
     });
   },
 
   // MCQs
   generateMcqs(documentId, count = 6) {
-    return this.request(`/mcqs/generate/${encodeURIComponent(documentId)}`, {
+    const path = documentId ? `/mcqs/generate/${encodeURIComponent(documentId)}` : "/mcqs/generate";
+    return this.request(path, {
       method: "POST",
-      body: JSON.stringify({ count })
+      body: JSON.stringify({ count, documentId })
     });
   },
 
   getMcqs(documentId = "all") {
-    return this.request(`/mcqs/${encodeURIComponent(documentId)}`);
+    const target = documentId || "all";
+    return this.request(`/mcqs/${encodeURIComponent(target)}`);
   },
 
   submitMcqQuiz(payload) {

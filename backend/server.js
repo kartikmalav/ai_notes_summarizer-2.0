@@ -184,7 +184,7 @@ if (require.main === module) {
       console.error("[STARTUP] Database startup initialization error ->", err.message);
     }
 
-    
+
     const server = app.listen(PORT, () => {
       console.log(`AI StudyLab server running on http://localhost:${PORT}`);
     });
@@ -193,9 +193,9 @@ if (require.main === module) {
       if (err.code === "EADDRINUSE") {
         console.error(
           `Error: Port ${PORT} is already in use (EADDRINUSE). Another server instance may already be running.\n` +
-            `To inspect the owning process on Windows PowerShell, run:\n` +
-            `  Get-NetTCPConnection -LocalPort ${PORT} -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess\n` +
-            `Stop the existing process (if it is an old AI StudyLab server) or adjust PORT in backend/.env, then retry.`
+          `To inspect the owning process on Windows PowerShell, run:\n` +
+          `  Get-NetTCPConnection -LocalPort ${PORT} -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess\n` +
+          `Stop the existing process (if it is an old AI StudyLab server) or adjust PORT in backend/.env, then retry.`
         );
         process.exit(1);
       }

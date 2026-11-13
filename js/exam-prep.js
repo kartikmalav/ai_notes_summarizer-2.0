@@ -738,6 +738,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("exam-doc-meta").textContent = "Upload a PDF document to unlock AI Exam Preparation.";
       if (docSelect) docSelect.innerHTML = `<option value="">No documents available</option>`;
       if (generateBtn) generateBtn.disabled = true;
+      if (mcqBtn) mcqBtn.href = "mcq-practice.html";
+      if (resultsLink) resultsLink.href = "results.html";
       document.getElementById("panel-questions").innerHTML = `
         <div class="exam-state-card">
           <i class="fa-solid fa-file-circle-plus" style="font-size: 1.6rem; color: var(--primary-light); margin-bottom: 10px;"></i>
