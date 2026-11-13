@@ -174,34 +174,35 @@ app.use("/api", notFoundHandler);
 app.use(errorHandler);
 
 if (require.main === module) {
-  const server = app.listen(PORT, () => {
-    console.log(`AI StudyLab server running on http://localhost:${PORT}`);
-    db.testConnection()
-      .then(async () => {
-        console.log("MySQL connection verified successfully.");
-        try {
-          await db.initDatabase();
-          console.log("Database schema verified (all required tables exist).");
-        } catch (schemaErr) {
-          console.warn("Warning: Database auto-initialization error ->", schemaErr.message);
-        }
-      })
-      .catch(err => console.warn("Warning: MySQL not connected yet ->", err.message));
-  });
-
-  server.on("error", err => {
-    if (err.code === "EADDRINUSE") {
-      console.error(
-        `Error: Port ${PORT} is already in use (EADDRINUSE). Another server instance may already be running.\n` +
-          `To inspect the owning process on Windows PowerShell, run:\n` +
-          `  Get-NetTCPConnection -LocalPort ${PORT} -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess\n` +
-          `Stop the existing process (if it is an old AI StudyLab server) or adjust PORT in backend/.env, then retry.`
-      );
-      process.exit(1);
+  (async () => {
+    try {
+      const identity = await db.getDatabaseIdentity();
+      console.log(`[STARTUP] MySQL connected: database='${identity.database}', host='${identity.hostname}', port=${identity.port}`);
+      const initResult = await db.initDatabase();
+      console.log(`[STARTUP] Database schema verified: all ${initResult.tables.length} tables present in '${initResult.database}' (users table verified).`);
+    } catch (err) {
+      console.error("[STARTUP] Database startup initialization error ->", err.message);
     }
-    console.error("Failed to start AI StudyLab server:", err.message);
-    process.exit(1);
-  });
+
+    
+    const server = app.listen(PORT, () => {
+      console.log(`AI StudyLab server running on http://localhost:${PORT}`);
+    });
+
+    server.on("error", err => {
+      if (err.code === "EADDRINUSE") {
+        console.error(
+          `Error: Port ${PORT} is already in use (EADDRINUSE). Another server instance may already be running.\n` +
+            `To inspect the owning process on Windows PowerShell, run:\n` +
+            `  Get-NetTCPConnection -LocalPort ${PORT} -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess\n` +
+            `Stop the existing process (if it is an old AI StudyLab server) or adjust PORT in backend/.env, then retry.`
+        );
+        process.exit(1);
+      }
+      console.error("Failed to start AI StudyLab server:", err.message);
+      process.exit(1);
+    });
+  })();
 }
 
 module.exports = app;

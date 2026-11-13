@@ -4,6 +4,8 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
+const { TABLES_DDL } = require("./schema");
+
 function getSslConfig() {
   const caPath = process.env.DB_CA_PATH || "/etc/secrets/ca.pem";
   if (fs.existsSync(caPath)) {
@@ -51,41 +53,102 @@ async function testConnection() {
 }
 
 /**
+ * Returns runtime MySQL identity info without revealing sensitive credentials.
+ */
+async function getDatabaseIdentity() {
+  const [rows] = await pool.query(
+    "SELECT DATABASE() AS current_db, @@hostname AS host_name, @@port AS port_number"
+  );
+  return {
+    database: rows[0]?.current_db || null,
+    hostname: rows[0]?.host_name || null,
+    port: rows[0]?.port_number || null
+  };
+}
+
+/**
+ * Inspects information_schema.tables to verify that required tables exist in current database.
+ */
+async function verifyRequiredTables() {
+  const identity = await getDatabaseIdentity();
+  if (!identity.database) {
+    throw new Error("No database selected in MySQL session.");
+  }
+
+  const [rows] = await pool.query(
+    "SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = ?",
+    [identity.database]
+  );
+  const existingTables = new Set(rows.map(r => r.TABLE_NAME.toLowerCase()));
+  const required = TABLES_DDL.map(t => t.name.toLowerCase());
+  const missing = required.filter(name => !existingTables.has(name));
+
+  return {
+    database: identity.database,
+    hostname: identity.hostname,
+    port: identity.port,
+    existingTables: Array.from(existingTables),
+    missingTables: missing,
+    isUsersTablePresent: existingTables.has("users"),
+    allPresent: missing.length === 0
+  };
+}
+
+/**
  * Safe database schema initializer.
- * Runs CREATE TABLE IF NOT EXISTS for all 9 required tables in the active database.
+ * Runs CREATE TABLE IF NOT EXISTS for all 9 required tables and verifies their existence.
  * Never drops tables or deletes existing data.
  */
 async function initDatabase() {
-  const schemaPath = path.join(__dirname, "..", "database.sql");
-  if (!fs.existsSync(schemaPath)) {
-    throw new Error(`Schema file not found at ${schemaPath}`);
-  }
-
-  const rawSql = fs.readFileSync(schemaPath, "utf8");
-  const statements = rawSql
-    .split(/;\s*[\r\n]+/)
-    .map(stmt => stmt.trim())
-    .filter(stmt => {
-      const nonComment = stmt
-        .split("\n")
-        .filter(l => !l.trim().startsWith("--"))
-        .join("\n")
-        .trim();
-      return nonComment.length > 0;
-    });
-
   const connection = await pool.getConnection();
   try {
-    for (const stmt of statements) {
-      const trimmed = stmt.trim();
-      if (
-        trimmed.toUpperCase().startsWith("SET NAMES") ||
-        trimmed.toUpperCase().startsWith("CREATE TABLE")
-      ) {
-        await connection.query(trimmed);
+    const [idRows] = await connection.query(
+      "SELECT DATABASE() AS current_db, @@hostname AS host_name, @@port AS port_number"
+    );
+    const currentDb = idRows[0]?.current_db;
+    const hostName = idRows[0]?.host_name;
+    const portNum = idRows[0]?.port_number;
+
+    if (!currentDb) {
+      throw new Error("Cannot initialize schema: No database selected in MySQL session. Check DB_NAME.");
+    }
+
+    console.log(`[DB INIT] Target MySQL database: '${currentDb}' on server '${hostName}:${portNum}'`);
+
+    await connection.query("SET NAMES utf8mb4");
+
+    for (const table of TABLES_DDL) {
+      try {
+        await connection.query(table.sql);
+      } catch (err) {
+        throw new Error(`Failed executing DDL for table '${table.name}' in '${currentDb}': ${err.message}`);
       }
     }
-    return true;
+
+    // Explicitly verify from information_schema.tables that tables actually exist
+    const [checkRows] = await connection.query(
+      "SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = ?",
+      [currentDb]
+    );
+    const existing = new Set(checkRows.map(r => r.TABLE_NAME.toLowerCase()));
+    const missing = TABLES_DDL.map(t => t.name.toLowerCase()).filter(n => !existing.has(n));
+
+    if (missing.length > 0) {
+      throw new Error(
+        `Database schema verification failed in '${currentDb}': Missing tables: ${missing.join(", ")}`
+      );
+    }
+
+    if (!existing.has("users")) {
+      throw new Error(`Critical: Table '${currentDb}.users' does not exist after initialization.`);
+    }
+
+    return {
+      database: currentDb,
+      hostname: hostName,
+      port: portNum,
+      tables: Array.from(existing)
+    };
   } finally {
     connection.release();
   }
@@ -95,5 +158,7 @@ module.exports = {
   pool,
   query,
   testConnection,
+  getDatabaseIdentity,
+  verifyRequiredTables,
   initDatabase
 };
