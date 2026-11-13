@@ -1,17 +1,13 @@
 -- ============================================================================
--- AI StudyLab - MySQL Database Schema
+-- AI StudyLab - MySQL Database Schema (Compatible with Aiven MySQL & Local MySQL)
+-- Safe to rerun: Uses CREATE TABLE IF NOT EXISTS and never drops existing data
 -- ============================================================================
 
-CREATE DATABASE IF NOT EXISTS ai_studylab
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE ai_studylab;
+SET NAMES utf8mb4;
 
 -- 1. Users Table
 CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
   name VARCHAR(120) NOT NULL,
   email VARCHAR(190) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
@@ -19,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_users_email (email)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 2. Documents Table
 CREATE TABLE IF NOT EXISTS documents (
@@ -43,7 +39,7 @@ CREATE TABLE IF NOT EXISTS documents (
   INDEX idx_documents_user (user_id),
   INDEX idx_documents_subject (user_id, subject),
   INDEX idx_documents_created (created_at)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 3. Summaries Table
 CREATE TABLE IF NOT EXISTS summaries (
@@ -60,7 +56,7 @@ CREATE TABLE IF NOT EXISTS summaries (
   CONSTRAINT fk_summaries_user
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_summaries_user_doc (user_id, document_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 4. Short Notes Table
 CREATE TABLE IF NOT EXISTS notes (
@@ -78,7 +74,7 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_notes_doc (document_id),
   INDEX idx_notes_user (user_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 5. Important Questions Table (2-mark, 5-mark, 10-mark)
 CREATE TABLE IF NOT EXISTS questions (
@@ -96,7 +92,7 @@ CREATE TABLE IF NOT EXISTS questions (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_questions_doc_marks (document_id, marks),
   INDEX idx_questions_user (user_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 6. MCQs Table
 CREATE TABLE IF NOT EXISTS mcqs (
@@ -115,7 +111,7 @@ CREATE TABLE IF NOT EXISTS mcqs (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_mcqs_doc (document_id),
   INDEX idx_mcqs_user (user_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 7. Chat History Table
 CREATE TABLE IF NOT EXISTS chat_history (
@@ -130,7 +126,7 @@ CREATE TABLE IF NOT EXISTS chat_history (
   CONSTRAINT fk_chat_user
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_chat_doc_user_time (document_id, user_id, created_at)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 8. Quiz Results Table
 CREATE TABLE IF NOT EXISTS quiz_results (
@@ -148,7 +144,7 @@ CREATE TABLE IF NOT EXISTS quiz_results (
   CONSTRAINT fk_quiz_document
     FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE SET NULL,
   INDEX idx_quiz_user_time (user_id, created_at)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 9. Exam Preparation Packs Table (Definitions & Structured Exam Metadata)
 CREATE TABLE IF NOT EXISTS exam_prep_packs (
@@ -166,23 +162,4 @@ CREATE TABLE IF NOT EXISTS exam_prep_packs (
   CONSTRAINT fk_examprep_user
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_examprep_user_doc (user_id, document_id)
-) ENGINE=InnoDB;
-
--- 9. Exam Preparation Packs Table (Definitions & Structured Exam Metadata)
-CREATE TABLE IF NOT EXISTS exam_prep_packs (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  document_id INT UNSIGNED NOT NULL UNIQUE,
-  user_id INT UNSIGNED NOT NULL,
-  topics_json JSON NOT NULL,
-  definitions_json JSON NOT NULL,
-  notes_meta_json JSON NOT NULL,
-  questions_meta_json JSON NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT fk_examprep_document
-    FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE,
-  CONSTRAINT fk_examprep_user
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_examprep_user_doc (user_id, document_id)
-) ENGINE=InnoDB;
-
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

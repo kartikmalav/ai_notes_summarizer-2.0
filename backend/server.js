@@ -177,7 +177,15 @@ if (require.main === module) {
   const server = app.listen(PORT, () => {
     console.log(`AI StudyLab server running on http://localhost:${PORT}`);
     db.testConnection()
-      .then(() => console.log("MySQL connection verified successfully."))
+      .then(async () => {
+        console.log("MySQL connection verified successfully.");
+        try {
+          await db.initDatabase();
+          console.log("Database schema verified (all required tables exist).");
+        } catch (schemaErr) {
+          console.warn("Warning: Database auto-initialization error ->", schemaErr.message);
+        }
+      })
       .catch(err => console.warn("Warning: MySQL not connected yet ->", err.message));
   });
 
